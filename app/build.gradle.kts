@@ -15,7 +15,22 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
+
+
+// Configurar la variable de entorno desde .env
+        val envFile = rootProject.file(".env")
+        val githubToken = if (envFile.exists()) {
+            envFile.readLines()
+                .firstOrNull { it.startsWith("GITHUB_API_TOKEN=") }
+                ?.substringAfter("GITHUB_API_TOKEN=")
+                ?.trim()
+                ?: ""
+        } else {
+            ""
+        }
+
+        buildConfigField("String", "GITHUB_API_TOKEN", "\"$githubToken\"")
+        }
 
     buildTypes {
         release {
@@ -29,6 +44,7 @@ android {
 
     buildFeatures{
         viewBinding = true
+        buildConfig = true
     }
 
 
@@ -51,4 +67,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    // Retrofit para networking
+        implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    // Convertidor Gson para serializar/deserializar JSON
+        implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    // (Opcional pero recomendado) Interceptor de logs para depurar las llamadas de red
+        implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    // Glide para cargar imágenes desde URLs
+        implementation("com.github.bumptech.glide:glide:4.16.0")
 }
+
