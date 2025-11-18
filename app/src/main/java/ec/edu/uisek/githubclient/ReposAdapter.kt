@@ -9,7 +9,7 @@ import ec.edu.uisek.githubclient.models.Repo
 
 class ReposViewHolder(private val binding: FragmentRepoItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
-    fun bind(repo: Repo) {
+    fun bind(repo: Repo, onEditClick: (Repo) -> Unit, onDeleteClick: (Repo) -> Unit) {
         binding.repoName.text = repo.name
         binding.repoDescription.text = repo.description
         binding.repoLang.text = repo.language
@@ -20,15 +20,20 @@ class ReposViewHolder(private val binding: FragmentRepoItemBinding) :
             .circleCrop()
             .into (binding.repoOwnerImage)
 
+        binding.editButton.setOnClickListener { onEditClick(repo) }
+        binding.deleteButton.setOnClickListener { onDeleteClick(repo) }
     }
 }
 
-class ReposAdapter: RecyclerView.Adapter<ReposViewHolder>() {
+class ReposAdapter(
+    private val onEditClick: (Repo) -> Unit,
+    private val onDeleteClick: (Repo) -> Unit
+): RecyclerView.Adapter<ReposViewHolder>() {
     private var repositories: List<Repo> = emptyList()
     override fun getItemCount(): Int = repositories.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReposViewHolder {
-        var binding = FragmentRepoItemBinding.inflate(
+        val binding = FragmentRepoItemBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -37,13 +42,11 @@ class ReposAdapter: RecyclerView.Adapter<ReposViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ReposViewHolder, position: Int) {
-        holder.bind(repositories[position])
+        holder.bind(repositories[position], onEditClick, onDeleteClick)
     }
 
     fun updateRepositories(newRepositories: List<Repo>) {
         repositories = newRepositories
         notifyDataSetChanged()
     }
-
-
 }
