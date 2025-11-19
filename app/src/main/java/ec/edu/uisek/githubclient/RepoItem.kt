@@ -14,6 +14,9 @@ class RepoItem : Fragment() {
     private val binding get() = _binding!!
 
 
+    /**
+     * Método del ciclo de vida llamado al crear el fragmento. Puede manejar argumentos si los hay.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -21,6 +24,9 @@ class RepoItem : Fragment() {
         }
     }
 
+    /**
+     * Infla el diseño del fragmento y configura el binding.
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,12 +36,18 @@ class RepoItem : Fragment() {
     }
 
 
+    /**
+     * Configura las vistas una vez que la jerarquía de vistas ha sido creada.
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.repoName.text = "Mi repositorio"
         binding.repoDescription.text = "Esta es la descripción del repositorio"
     }
 
+    /**
+     * Limpia el binding cuando la vista del fragmento es destruida para evitar fugas de memoria.
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

@@ -12,15 +12,24 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface GithubApiService {
+    /**
+     * Obtiene la lista de repositorios del usuario autenticado, ordenados según los parámetros.
+     */
     @GET("user/repos")
     fun getRepos(
         @Query("sort") sort: String = "created",
         @Query("direction") direction: String = "desc"
     ): Call<List<Repo>>
 
+    /**
+     * Crea un nuevo repositorio en GitHub para el usuario autenticado.
+     */
     @POST("user/repos")
     fun createRepo(@Body repoRequest: RepoRequest): Call<Repo>
 
+    /**
+     * Actualiza la información de un repositorio existente (nombre, descripción, etc.).
+     */
     @PATCH("repos/{owner}/{repo}")
     fun updateRepo(
         @Path("owner") owner: String,
@@ -28,6 +37,9 @@ interface GithubApiService {
         @Body repoRequest: RepoRequest
     ): Call<Repo>
 
+    /**
+     * Elimina un repositorio específico del usuario.
+     */
     @DELETE("repos/{owner}/{repo}")
     fun deleteRepo(
         @Path("owner") owner: String,

@@ -20,6 +20,10 @@ class MainActivity : AppCompatActivity() {
         RetrofitClient.gitHubApiService
     }
 
+    /**
+     * Método del ciclo de vida que inicializa la actividad, configura el layout binding,
+     * el RecyclerView y el listener del botón flotante.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -32,16 +36,28 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Método del ciclo de vida que se llama cuando la actividad entra en primer plano.
+     * Se utiliza para refrescar la lista de repositorios.
+     */
     override fun onResume() {
         super.onResume()
         fetchRepositories()
     }
 
+    /**
+     * Configura el adaptador del RecyclerView y asigna las funciones para manejar
+     * los eventos de edición y eliminación de repositorios.
+     */
     private fun setupRecyclerView() {
         reposAdapter = ReposAdapter(::handleEditClick, ::handleDeleteClick)
         binding.reposRecyclerView.adapter = reposAdapter
     }
 
+    /**
+     * Realiza una llamada a la API para obtener la lista de repositorios del usuario
+     * y actualiza el adaptador con los datos recibidos.
+     */
     private fun fetchRepositories() {
         apiService.getRepos().enqueue(object : Callback<List<Repo>> {
             override fun onResponse(call: Call<List<Repo>>, response: Response<List<Repo>>) {
@@ -63,6 +79,10 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * Maneja el evento de clic en el botón de editar de un repositorio, abriendo
+     * el formulario con los datos del repositorio seleccionado.
+     */
     private fun handleEditClick(repo: Repo) {
         val intent = Intent(this, RepoForm::class.java).apply {
             putExtra("repo", repo)
@@ -70,6 +90,10 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    /**
+     * Maneja el evento de clic en el botón de eliminar, mostrando un diálogo de confirmación
+     * antes de proceder a borrar el repositorio.
+     */
     private fun handleDeleteClick(repo: Repo) {
         AlertDialog.Builder(this)
             .setTitle("Confirmar Eliminación")
@@ -81,6 +105,10 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
+    /**
+     * Llama a la API para eliminar un repositorio específico y actualiza la lista
+     * si la operación es exitosa.
+     */
     private fun deleteRepository(repo: Repo) {
         apiService.deleteRepo(repo.owner.login, repo.name).enqueue(object : Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
@@ -98,11 +126,17 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * Inicia la actividad del formulario para crear un nuevo repositorio.
+     */
     private fun displayNewRepoForm() {
         val intent = Intent(this, RepoForm::class.java)
         startActivity(intent)
     }
 
+    /**
+     * Muestra un mensaje de error adecuado según el código de estado HTTP recibido.
+     */
     private fun handleApiError(code: Int) {
         val errorMessage = when (code) {
             401 -> "No autorizado"
@@ -113,6 +147,9 @@ class MainActivity : AppCompatActivity() {
         showMessage(errorMessage)
     }
 
+    /**
+     * Muestra un mensaje temporal (Toast) al usuario.
+     */
     private fun showMessage(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }

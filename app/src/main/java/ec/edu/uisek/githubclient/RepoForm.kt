@@ -20,6 +20,10 @@ class RepoForm : AppCompatActivity() {
         RetrofitClient.gitHubApiService
     }
 
+    /**
+     * Inicializa la actividad, configura el binding, recupera los datos del intent si existen
+     * y configura los listeners para los botones de guardar y cancelar.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRepoFormBinding.inflate(layoutInflater)
@@ -41,6 +45,10 @@ class RepoForm : AppCompatActivity() {
         }
     }
 
+    /**
+     * Recopila la información del formulario y realiza la petición a la API para crear
+     * o actualizar un repositorio, manejando la respuesta correspondiente.
+     */
     private fun saveRepo() {
         val name = binding.repoNameInput.text.toString()
         val description = binding.repoDescriptionInput.text.toString()
@@ -70,6 +78,9 @@ class RepoForm : AppCompatActivity() {
         })
     }
 
+    /**
+     * Procesa el código de error HTTP devuelto por la API y muestra un mensaje amigable al usuario.
+     */
     private fun handleApiError(code: Int) {
         val errorMessage = when (code) {
             401 -> "No autorizado"
@@ -81,6 +92,9 @@ class RepoForm : AppCompatActivity() {
         showMessage(errorMessage)
     }
 
+    /**
+     * Muestra un mensaje breve (Toast) en la pantalla.
+     */
     private fun showMessage(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
