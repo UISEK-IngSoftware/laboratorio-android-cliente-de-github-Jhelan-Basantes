@@ -17,7 +17,7 @@ class RepoForm : AppCompatActivity() {
     private lateinit var binding: ActivityRepoFormBinding
     private var repo: Repo? = null
     private val apiService: GithubApiService by lazy {
-        RetrofitClient.gitHubApiService
+        RetrofitClient.getApiService()
     }
 
     /**

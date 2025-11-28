@@ -9,4 +9,9 @@
     <string name="save">Guardar</string>
     <string name="edit_button">Editar</string>
     <string name="delete_button">Eliminar</string>
+    <!--Strings pantalla login -->
+    <string name="user">Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="login">Ingresar</string>
+   
 </resources>

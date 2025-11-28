@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var reposAdapter: ReposAdapter
     private val apiService: GithubApiService by lazy {
-        RetrofitClient.gitHubApiService
+        RetrofitClient.getApiService()
     }
 
     /**
